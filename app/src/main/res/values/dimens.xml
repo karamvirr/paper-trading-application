@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="vMargin">16dp</dimen>
+    <dimen name="heading_size">32sp</dimen>
+    <dimen name="marginText">10dp</dimen>
+    <dimen name="margin_bottom">5dp</dimen>
+    <dimen name="padding_size">14dp</dimen>
+    <dimen name="heading_two_size">24sp</dimen>
+    <dimen name="heading_three_size">20sp</dimen>
+    <dimen name="heading_four_size">12sp</dimen>
+    <dimen name="padding_small">5dp</dimen>
+</resources>

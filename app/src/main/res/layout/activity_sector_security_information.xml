@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".source.activities.SectorSecurityInformation">
+    <include
+        android:id="@+id/sector_list_toolbar"
+        layout="@layout/enhanced_toolbar" />
+
+    <ScrollView
+        android:id="@+id/placeholder_view"
+        android:layout_below="@+id/sector_list_toolbar"
+        android:layout_above="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/sector_info_shimmer"
+            app:shimmer_auto_start="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sector_recycler_view"
+        android:layout_below="@+id/sector_list_toolbar"
+        android:layout_above="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <!-- SORTING FAB -->
+    <FrameLayout
+        android:id="@+id/menu_background"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/sorting_options"
+        android:layout_above="@+id/ad_container"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+
+        app:fab_addButtonColorNormal="@android:color/white"
+        app:fab_addButtonColorPressed="@android:color/white"
+        app:fab_addButtonPlusIconColor="@android:color/black"
+        app:elevation="15dp"
+        app:backgroundTint="@null"
+        app:fab_addButtonStrokeVisible="false"
+
+        app:fab_expandDirection="up"
+        app:fab_addButtonSize="mini"
+        app:fab_labelStyle="@style/fab"
+        app:fab_labelsPosition="left">
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/symbol_ascending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_up_arrow_black"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Ticker Symbol - Ascending"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/symbol_descending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_down_arrow_black"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Ticker Symbol - Descending"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/price_ascending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_up_arrow_black"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Stock Price - Ascending"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/price_descending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_down_arrow_black"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Stock Price - Descending"/>
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <RelativeLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/sector_information">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+</RelativeLayout>

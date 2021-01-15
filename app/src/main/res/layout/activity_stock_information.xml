@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".source.activities.StockInformationActivity">
+
+    <include
+        android:id="@+id/stock_info_toolbar"
+        layout="@layout/stock_information_toolbar" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/stock_refresh_view"
+        android:layout_above="@+id/ad_container"
+        android:layout_below="@+id/stock_info_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/stock_info_scrollview"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="45dp"
+            android:fillViewport="false"
+            android:requiresFadingEdge="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/stock_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:orientation="vertical">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/stock_info_shimmer"
+                    app:shimmer_auto_start="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:background="@color/placeholderBackground"
+                            android:layout_width="200dp"
+                            android:layout_height="24dp"
+                            android:layout_marginBottom="5dp" />
+                        <ImageView
+                            android:background="@color/placeholderBackground"
+                            android:layout_marginBottom="5dp"
+                            android:layout_width="125dp"
+                            android:layout_height="34dp"/>
+                        <ImageView
+                            android:background="@color/placeholderBackground"
+                            android:layout_width="115dp"
+                            android:layout_height="20dp" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/stock_price_container"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/name"
+                        android:text="@string/name_placeholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22dp" />
+                    <com.robinhood.ticker.TickerView
+                        android:id="@+id/price"
+                        android:text="@string/value_placeholder"
+                        android:textSize="34dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/arrow"
+                            app:layout_constraintRight_toLeftOf="@+id/change"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_up_arrow"/>
+
+                        <TextView
+                            android:id="@+id/change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/percent_change_placeholder"
+                            android:textColor="@color/gray"
+                            android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/arrow"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/chart_shimmer"
+                    app:shimmer_auto_start="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/placeholderBackground"/>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <com.pocketprofit.source.stockchart.StockChartView
+                    android:id="@+id/stockChart"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    app:flexDirection="row"
+                    app:justifyContent="space_evenly">
+                    <TextView
+                        android:id="@+id/oneDay"
+                        android:text="@string/first_option"
+                        android:textColor="@color/gray"
+                        android:background="@drawable/transparent_button"
+                        android:padding="@dimen/padding_small"
+                        android:textStyle="bold"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/fiveDay"
+                        android:background="@drawable/transparent_button"
+                        android:textColor="@color/gray"
+                        android:paddingStart="10dp"
+                        android:textStyle="bold"
+                        android:paddingEnd="10dp"
+                        android:text="@string/second_option"
+                        android:padding="@dimen/padding_small"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/oneMonth"
+                        android:paddingStart="10dp"
+                        android:background="@drawable/transparent_button"
+                        android:textColor="@color/gray"
+                        android:paddingEnd="10dp"
+                        android:textStyle="bold"
+                        android:text="@string/third_option"
+                        android:padding="@dimen/padding_small"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/sixMonth"
+                        android:background="@drawable/transparent_button"
+                        android:textColor="@color/gray"
+                        android:paddingStart="10dp"
+                        android:textStyle="bold"
+                        android:paddingEnd="10dp"
+                        android:text="@string/fourth_option"
+                        android:padding="@dimen/padding_small"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/oneYear"
+                        android:paddingStart="10dp"
+                        android:background="@drawable/transparent_button"
+                        android:textColor="@color/gray"
+                        android:paddingEnd="10dp"
+                        android:textStyle="bold"
+                        android:text="@string/fifth_option"
+                        android:padding="@dimen/padding_small"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/fiveYear"
+                        android:paddingStart="10dp"
+                        android:background="@drawable/transparent_button"
+                        android:textColor="@color/gray"
+                        android:paddingEnd="10dp"
+                        android:textStyle="bold"
+                        android:text="@string/sixth_option"
+                        android:padding="@dimen/padding_small"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    app:flexDirection="row"
+                    app:justifyContent="space_around">
+
+                    <Button
+                        android:id="@+id/buy"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_green_button"
+                        android:text="@string/buy_action"
+                        android:textColor="@android:color/black" />
+
+                    <Button
+                        android:id="@+id/sell"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_red_button"
+                        android:text="@string/sell_action"
+                        android:textColor="@android:color/black" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <TextView
+                    android:text="@string/your_position"
+                    android:id="@+id/position_header"
+                    android:visibility="gone"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <androidx.gridlayout.widget.GridLayout
+                    android:id="@+id/position_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    app:alignmentMode="alignBounds"
+                    app:rowOrderPreserved="false"
+                    app:useDefaultMargins="true"
+                    app:columnCount="2">
+                </androidx.gridlayout.widget.GridLayout>
+                <LinearLayout
+                    android:id="@+id/position_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/order_history_link"
+                    android:visibility="gone"
+                    android:padding="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/link"/>
+
+                <TextView
+                    android:text="@string/stats"
+                    android:visibility="gone"
+                    android:id="@+id/stats_header"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <androidx.gridlayout.widget.GridLayout
+                    android:id="@+id/stats_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    app:alignmentMode="alignBounds"
+                    app:rowOrderPreserved="false"
+                    app:useDefaultMargins="true"
+                    app:columnCount="2">
+                </androidx.gridlayout.widget.GridLayout>
+
+                <Button
+                    android:id="@+id/news_button"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="@dimen/vMargin"
+                    android:layout_marginRight="@dimen/vMargin"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/rounded_gray_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:text="@string/about"
+                    android:id="@+id/about_header"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/about_grid"
+                    android:layout_marginBottom="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <TextView
+                    android:text="@string/company_description"
+                    android:visibility="gone"
+                    android:id="@+id/company_description_header"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/company_description"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="@dimen/vMargin"
+                    android:layout_marginRight="@dimen/vMargin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/stockchart_banner_ad">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+</RelativeLayout>

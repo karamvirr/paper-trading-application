@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="ring"
+            android:thicknessRatio="15"
+            android:useLevel="false">
+            <solid android:color="#DDD" />
+        </shape>
+    </item>
+    <item android:id="@+id/progress_color">
+        <rotate
+            android:fromDegrees="-90"
+            android:toDegrees="-90">
+            <shape
+                android:shape="ring"
+                android:thicknessRatio="15"
+                android:useLevel="true">
+                <solid android:color="@color/colorAccent" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

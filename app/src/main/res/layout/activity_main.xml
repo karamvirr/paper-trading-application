@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".source.activities.MainActivity">
+
+    <include
+        android:id="@+id/homepage_toolbar"
+        layout="@layout/main_toolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_below="@+id/homepage_toolbar"
+        android:layout_above="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.robinhood.ticker.TickerView
+                    android:id="@+id/portfolio_value_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/value_placeholder"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="46sp"/>
+
+                <LinearLayout
+                    android:id="@+id/value_info_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vMargin"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/todays_change"
+                        android:text="@string/percent_change_placeholder"
+                        android:textColor="@color/gray"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:text="@string/today"
+                        android:layout_marginLeft="@dimen/marginText"
+                        android:layout_marginStart="@dimen/marginText"
+                        android:textColor="@color/gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/stock_header"
+                    android:text="@string/stocks"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/stock_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/stocks_owned_placeholder"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/shimmer_stock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <TextView
+                    android:id="@+id/watchlist_header"
+                    android:text="@string/watchlist"
+                    android:textSize="20dp"
+                    android:layout_marginTop="@dimen/vMargin"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/watchlist_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/watchlist_placeholder"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/shimmer_watchlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_background"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- MENU -->
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+
+        app:fab_addButtonColorNormal="#141414"
+        app:fab_addButtonColorPressed="#141414"
+        app:fab_addButtonPlusIconColor="@android:color/white"
+        app:elevation="0dp"
+        app:backgroundTint="@null"
+        app:fab_addButtonStrokeVisible="false"
+
+        app:fab_expandDirection="down"
+        app:fab_addButtonSize="mini"
+        app:fab_labelStyle="@style/fab"
+        app:fab_labelsPosition="right">
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sectors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_sectors"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Sectors"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/top_movers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_top_movers"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Today's Movers" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/transaction_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_transaction_history"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Transaction History"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/account_statement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_account_statement"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_title="Account Statement"/>
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <RelativeLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/homepage_banner_ad">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+
+</RelativeLayout>

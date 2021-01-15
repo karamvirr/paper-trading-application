@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="background">#040D16</color>
+    <color name="profit">#00C802</color>
+    <color name="loss">#FF4F00</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="lightGray">#737E84</color>
+    <color name="placeholderBackground">#DDDDDD</color>
+    <color name="link">#0481FF</color>
+</resources>

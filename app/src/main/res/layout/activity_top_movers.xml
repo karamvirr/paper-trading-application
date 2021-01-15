@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".source.activities.TopMoversActivity">
+
+    <include
+        android:id="@+id/top_movers_toolbar"
+        layout="@layout/simple_toolbar" />
+
+    <TextView
+        android:id="@+id/no_top_movers_data"
+        android:visibility="gone"
+        android:text="@string/no_data"
+        android:textSize="20sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/movers_flexbox"
+        android:layout_below="@id/top_movers_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/vMargin"
+        app:flexDirection="row"
+        app:justifyContent="space_around">
+        <Button
+            android:id="@+id/gainers"
+            android:text="@string/top_gainers"
+            android:textStyle="bold"
+            android:background="@drawable/transparent_button"
+            android:textColor="@color/gray"
+            android:textAllCaps="false"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/losers"
+            android:text="@string/top_losers"
+            android:textStyle="bold"
+            android:background="@drawable/transparent_button"
+            android:textColor="@color/gray"
+            android:textAllCaps="false"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <ScrollView
+        android:id="@+id/placeholder_view"
+        android:layout_below="@+id/movers_flexbox"
+        android:layout_above="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/top_mover_shimmer"
+            app:shimmer_auto_start="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/shimmer_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+                <include layout="@layout/stock_placeholder" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movers_recycler_view"
+
+        android:layout_below="@id/movers_flexbox"
+        android:layout_above="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/top_movers_banner_ad">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+
+</RelativeLayout>

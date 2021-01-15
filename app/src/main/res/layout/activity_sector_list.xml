@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".source.activities.SectorListActivity">
+    <include
+        android:id="@+id/sector_list_toolbar"
+        layout="@layout/enhanced_toolbar" />
+
+    <ScrollView
+        android:layout_below="@+id/sector_list_toolbar"
+        android:layout_above="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/sector_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/sector_list_shimmer"
+                app:shimmer_auto_start="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/shimmer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                    <include layout="@layout/sector_name_entry_placeholder" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/sector_list">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+
+</RelativeLayout>

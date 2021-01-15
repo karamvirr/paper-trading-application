@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:fab_size="mini"
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@color/gray"
+            app:fab_icon="@drawable/ic_search" />
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>

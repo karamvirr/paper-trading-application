@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/item_selector"
+    android:layout_marginStart="@dimen/vMargin"
+    android:layout_marginLeft="@dimen/vMargin"
+    android:layout_marginEnd="@dimen/vMargin"
+    android:layout_marginRight="@dimen/vMargin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:background="@drawable/underline_gray"
+        android:paddingLeft="0dp"
+        android:paddingStart="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/sector_header"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="0dp"
+            android:layout_marginBottom="2dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toStartOf="@+id/arrow_forward"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/arrow_forward"
+            android:src="@drawable/ic_arrow_forward"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>
