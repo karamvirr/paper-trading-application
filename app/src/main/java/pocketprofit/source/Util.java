@@ -511,19 +511,15 @@ public final class Util {
                     Log.e(TAG, "TimeoutError || NoConnectionError");
                     Log.i(TAG, "TimeoutError || NoConnectionError");
                 } else if (error instanceof AuthFailureError) {
-                    //TODO
                     Log.e(TAG, "AuthFailureError");
                     Log.i(TAG, "AuthFailureError");
                 } else if (error instanceof ServerError) {
-                    //TODO
                     Log.e(TAG, "ServerError");
                     Log.i(TAG, "ServerError");
                 } else if (error instanceof NetworkError) {
-                    //TODO
                     Log.e(TAG, "Network Error");
                     Log.i(TAG, "Network Error");
                 } else if (error instanceof ParseError) {
-                    //TODO
                     Log.e(TAG, "ParseError " + error.getMessage());
                     Log.i(TAG, "ParseError " + error.getMessage());
                 }
@@ -570,19 +566,15 @@ public final class Util {
                     Log.e(TAG, "TimeoutError || NoConnectionError");
                     Log.i(TAG, "TimeoutError || NoConnectionError");
                 } else if (error instanceof AuthFailureError) {
-                    //TODO
                     Log.e(TAG, "AuthFailureError");
                     Log.i(TAG, "AuthFailureError");
                 } else if (error instanceof ServerError) {
-                    //TODO
                     Log.e(TAG, "ServerError");
                     Log.i(TAG, "ServerError");
                 } else if (error instanceof NetworkError) {
-                    //TODO
                     Log.e(TAG, "Network Error");
                     Log.i(TAG, "Network Error");
                 } else if (error instanceof ParseError) {
-                    //TODO
                     Log.e(TAG, "ParseError " + error.getMessage());
                     Log.i(TAG, "ParseError " + error.getMessage());
                 }
