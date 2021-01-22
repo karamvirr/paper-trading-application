@@ -25,13 +25,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
 
-    // bridge between our data (mQueryResultList) and our RecyclerView
+    // bridge between our data (List<SearchResultEntry> - search result for query) and our RecyclerView
     private SearchResultAdapter mAdapter;
-    private List<SearchResultEntry> mQueryResultList;
+
+    // caches all search results to increase performance on searches on previous queries (the first
+    // call to query "APPL" will take time as it will send a request to the PocketProfit API, however,
+    // after this the result is cached locally and all future calls to "APPL" in this activity instance
+    // will display the results almost immediately). also this serves as a way to save money, since
+    // search queries that were performed already don't have to request data from the API again.
+    private Map<String, List<SearchResultEntry>> mResultCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +62,10 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        mQueryResultList = new ArrayList<>();
         buildRecyclerView();
+
+        mResultCache = new HashMap<String, List<SearchResultEntry>>();
+        mResultCache.put("", new ArrayList<SearchResultEntry>());  // empty search box.
         setSearchBar();
     }
 
@@ -64,32 +74,29 @@ public class SearchActivity extends AppCompatActivity {
      * available to trade.
      */
     public void setSearchBar() {
-        final EditText searchBox = (EditText) this.findViewById(R.id.search_bar);
-
-        searchBox.addTextChangedListener(new TextWatcher() {
+        ((EditText) this.findViewById(R.id.search_bar)).addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (searchBox.getText().toString().length() == 0) {
-                    clearQueryResults();
-                }
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (searchBox.getText().toString().length() == 0) {
-                    clearQueryResults();
-                }
+                toggleSearchProgressBarVisibility(true);
+                executeQuery(getQuery());
             }
-
             @Override
-            public void afterTextChanged(Editable editable) {
-                clearQueryResults();
-                if (searchBox.getText().toString().length() > 0) {
-                    toggleSearchProgressBarVisibility(true);
-                    executeQuery(searchBox.getText().toString());
-                }
-            }
+            public void afterTextChanged(Editable editable) {}
         });
+    }
+
+    /**
+     * Returns the text that is currently in the search box in lowercase, this represents the search query the
+     * user is making.
+     *
+     * @return  the text currently in the search box.
+     */
+    private String getQuery() {
+        EditText searchBox = (EditText) this.findViewById(R.id.search_bar);
+        return searchBox.getText().toString().toLowerCase();
     }
 
     /**
@@ -109,23 +116,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * Removes all of the search results currently displayed on the screen.
-     */
-    public void clearQueryResults() {
-        int size = mQueryResultList.size();
-        for (int i = 0; i < size; i++) {
-            removeEntry(0);
-        }
-    }
-
-    /**
      * Sets up a container that will be used to store results gathered from user input.
      */
     public void buildRecyclerView() {
         RecyclerView mRecyclerView = this.findViewById(R.id.recycler_view);
         // responsible for aligning the single items in our list.
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new SearchResultAdapter(mQueryResultList, this);
+        mAdapter = new SearchResultAdapter(new ArrayList<SearchResultEntry>(), this);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -133,7 +130,7 @@ public class SearchActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new SearchResultAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                SearchResultEntry querySelected = mQueryResultList.get(position);
+                SearchResultEntry querySelected = mAdapter.get(position);
                 String companyName = querySelected.getSubheader();
                 String companySymbol = querySelected.getHeader();
                 openStockInformationActivity(companyName, companySymbol);
@@ -160,57 +157,54 @@ public class SearchActivity extends AppCompatActivity {
      *
      * @param query the user input
      */
-    public void executeQuery(String query) {
-        Util.fetchSearchResults(getBaseContext(), query, new JSONArrayCallback() {
-            @Override
-            public void onSuccess(JSONArray response) {
-                toggleSearchProgressBarVisibility(false);
-                clearQueryResults();
-
-                int position = 0;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject result = response.getJSONObject(i);
-                        String name = result.getString("securityName");
-                        String symbol = result.getString("symbol");
-                        String exchange = result.getString("exchange");
-                        String securityType = result.getString("securityType");
-
-                        if (!symbol.contains("-") &&
-                                !Util.EXCHANGES_NOT_SUPPORTED.contains(exchange) && !name.equals("")
-                                && !securityType.equals("MF_O") && !securityType.equals("PREF")) {
-                            insertEntry(position++, name, symbol);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+    public void executeQuery(final String query) {
+        if (mResultCache.containsKey(query)) {
+            toggleSearchProgressBarVisibility(false);
+            mAdapter.setList(mResultCache.get(query));
+        } else {
+            Util.fetchSearchResults(getBaseContext(), query, new JSONArrayCallback() {
+                @Override
+                public void onSuccess(JSONArray response) {
+                    List<SearchResultEntry> searchResultList = parseSearchResult(response);
+                    mResultCache.put(query, searchResultList);
+                    // only update the search result view if the JSON response is for the query
+                    // currently on the search box. 
+                    if (query.equals(getQuery())) {
+                        toggleSearchProgressBarVisibility(false);
+                        mAdapter.setList(searchResultList);
                     }
                 }
+            });
+        }
+    }
+
+    /**
+     * Uses the JSON list provided as a parameter to return a parsed list. A parsed list is all
+     * the ticker symbols in the JSON param that are supported by PocketProfit.
+     * The returned list can be used by the adapter to display contents on the recycler view.
+     *
+     * @param jsonResponse  JSON response from a call to the PocketProfit API
+     * @return              returns a parsed list of the JSON given as a parameter.
+     */
+    private List<SearchResultEntry> parseSearchResult(JSONArray jsonResponse) {
+        List<SearchResultEntry> parsedList = new ArrayList<SearchResultEntry>();
+        for (int i = 0; i < jsonResponse.length(); i++) {
+            try {
+                JSONObject result = jsonResponse.getJSONObject(i);
+                String name = result.getString("securityName");
+                String symbol = result.getString("symbol");
+                String exchange = result.getString("exchange");
+                String securityType = result.getString("securityType");
+
+                if (!symbol.contains("-") &&
+                        !Util.EXCHANGES_NOT_SUPPORTED.contains(exchange) && !name.equals("")
+                        && !securityType.equals("MF_O") && !securityType.equals("PREF")) {
+                    parsedList.add(new SearchResultEntry(symbol, name));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
-    }
-
-    /**
-     * Places a search result element onto the screen for the user to see. This search result will
-     * contain information such as the name & symbol of the company/security, if
-     * one is available.
-     * The user can also click on this entry to open up its stock information chart.
-     *
-     * @param position  the position to place this entry on the screen.
-     * @param name      the company/security name of the search result entry.
-     * @param symbol    the ticker symbol of the company/security name.
-     */
-    public void insertEntry(int position, String name, String symbol) {
-        mQueryResultList.add(position, new SearchResultEntry(symbol, name));
-        mAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Removes a search result element at the position defined in the parameter from the screen.
-     *
-     * @param position the position of the element to remove in the search result list.
-     */
-    public void removeEntry(int position) {
-        mQueryResultList.remove(position);
-        mAdapter.notifyDataSetChanged();
+        }
+        return parsedList;
     }
 }

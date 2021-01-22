@@ -742,7 +742,7 @@ public class StockInformationActivity extends AppCompatActivity implements View.
     }
 
     /**
-     * Set's up the stock price animations.
+     * Sets up the stock price animations.
      */
     public void setupStockPriceText() {
         // specifying the animation style of the stock price text.

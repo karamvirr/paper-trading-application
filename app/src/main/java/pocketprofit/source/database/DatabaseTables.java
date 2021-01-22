@@ -35,6 +35,7 @@ public class DatabaseTables {
     }
 
     // all of the pending stock splits that are to occur.
+    // Note: this is a feature that has not been implemented as of version 1.1.1
     public static final class StockSplits implements  BaseColumns {
         public static final String TABLE_NAME = "stockSplits";
         public static final String COLUMN_SYMBOL = "symbol";

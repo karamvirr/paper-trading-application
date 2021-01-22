@@ -95,6 +95,10 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         }
     }
 
+    public StockEntry get(int position) {
+        return mStocks.get(position);
+    }
+
     @Override
     public int getItemCount() {
         if (mStocks == null) {
@@ -110,10 +114,4 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         return mStocks.get(position).getHeader();
     }
 
-    public void swapStockList(List<StockEntry> newList) {
-        mStocks = newList;
-        if (mStocks != null) {
-            notifyDataSetChanged();
-        }
-    }
 }

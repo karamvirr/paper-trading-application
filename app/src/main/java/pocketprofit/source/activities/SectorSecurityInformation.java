@@ -19,8 +19,8 @@ import com.google.android.gms.ads.AdView;
 import com.pocketprofit.R;
 import com.pocketprofit.source.JSONArrayCallback;
 import com.pocketprofit.source.Util;
-import com.pocketprofit.source.adapters.EnhancedStockAdapter;
-import com.pocketprofit.source.entries.EnhancedStockEntry;
+import com.pocketprofit.source.adapters.StockAdapter;
+import com.pocketprofit.source.entries.StockEntry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,8 +31,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SectorSecurityInformation extends AppCompatActivity {
-    private List<EnhancedStockEntry> sectorDataList;
-    private EnhancedStockAdapter mAdapter;
+    private List<StockEntry> sectorDataList;
+    private StockAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,8 @@ public class SectorSecurityInformation extends AppCompatActivity {
     /**
      * Parses the JSON response from the PocketProfit server and displays relevant information on
      * the user's screen.
-     * The JSON data given in as a parameter will contain information (price, symbol, name, change,
-     * etc) of stocks all in the same sector.
+     * The JSON data given in as a parameter will contain information (price, symbol, name)
+     * of stocks all in the same sector.
      *
      * @param jsonArray     the JSON data retrieved from the API call.
      */
@@ -89,20 +89,18 @@ public class SectorSecurityInformation extends AppCompatActivity {
                 String symbol = companyData.getString("symbol");
 
                 double currentPrice = companyData.getDouble("latestPrice");
-                double totalChange = companyData.getDouble("change");
-                double percentChange = companyData.getDouble("changePercent");
                 String exchange = companyData.getString("primaryExchange");
 
                 int color;
-                if (totalChange >= 0.0) {
-                    color = this.getResources().getColor(R.color.profit);
-                } else {
+                if (companyData.isNull("change") || companyData.getDouble("change") < 0.0) {
                     color = getResources().getColor(R.color.loss);
+                } else {
+                    color = this.getResources().getColor(R.color.profit);
                 }
 
-                if (!symbol.contains("-") && !Util.EXCHANGES_NOT_SUPPORTED.contains(exchange)) {
+                if (!symbol.contains("-") && !Util.EXCHANGES_NOT_SUPPORTED.contains(exchange) && currentPrice >= 0.01) {
                     counter++;
-                    sectorDataList.add(new EnhancedStockEntry(name, symbol, color, currentPrice, totalChange, percentChange));
+                    sectorDataList.add(new StockEntry(symbol, name, currentPrice, color));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -121,15 +119,15 @@ public class SectorSecurityInformation extends AppCompatActivity {
 
         RecyclerView mRecyclerView = (RecyclerView) this.findViewById(R.id.sector_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new EnhancedStockAdapter(sectorDataList, this);
+        mAdapter = new StockAdapter(this, sectorDataList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new EnhancedStockAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new StockAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                EnhancedStockEntry itemSelected = mAdapter.get(position);
+                StockEntry itemSelected = mAdapter.get(position);
                 String companySymbol = itemSelected.getHeader();
                 String companyName = itemSelected.getSubheader();
 
@@ -192,9 +190,9 @@ public class SectorSecurityInformation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 menu.collapse();
-                Collections.sort(sectorDataList, new Comparator<EnhancedStockEntry>() {
+                Collections.sort(sectorDataList, new Comparator<StockEntry>() {
                     @Override
-                    public int compare(EnhancedStockEntry a, EnhancedStockEntry b) {
+                    public int compare(StockEntry a, StockEntry b) {
                         return a.getHeader().compareTo(b.getHeader());
                     }
                 });
@@ -206,9 +204,9 @@ public class SectorSecurityInformation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 menu.collapse();
-                Collections.sort(sectorDataList, new Comparator<EnhancedStockEntry>() {
+                Collections.sort(sectorDataList, new Comparator<StockEntry>() {
                     @Override
-                    public int compare(EnhancedStockEntry a, EnhancedStockEntry b) {
+                    public int compare(StockEntry a, StockEntry b) {
                         return -a.getHeader().compareTo(b.getHeader());
                     }
                 });
@@ -220,9 +218,9 @@ public class SectorSecurityInformation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 menu.collapse();
-                Collections.sort(sectorDataList, new Comparator<EnhancedStockEntry>() {
+                Collections.sort(sectorDataList, new Comparator<StockEntry>() {
                     @Override
-                    public int compare(EnhancedStockEntry a, EnhancedStockEntry b) {
+                    public int compare(StockEntry a, StockEntry b) {
                         return -Double.compare(b.getPrice(), a.getPrice());
                     }
                 });
@@ -234,9 +232,9 @@ public class SectorSecurityInformation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 menu.collapse();
-                Collections.sort(sectorDataList, new Comparator<EnhancedStockEntry>() {
+                Collections.sort(sectorDataList, new Comparator<StockEntry>() {
                     @Override
-                    public int compare(EnhancedStockEntry a, EnhancedStockEntry b) {
+                    public int compare(StockEntry a, StockEntry b) {
                         return Double.compare(b.getPrice(), a.getPrice());
                     }
                 });
