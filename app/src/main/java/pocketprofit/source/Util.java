@@ -43,7 +43,7 @@ public final class Util {
 
     // these sectors cause 503 errors (response from PocketProfit is too large to process)
     public static final List<String> SECTORS_NOT_SUPPORTED =
-            Collections.unmodifiableList(Arrays.asList("Miscellaneous", "Government", "Finance", "N/A"));
+            Collections.unmodifiableList(Arrays.asList("Miscellaneous", "Government", "Finance"));
 
     public static final String MARKET_HOURS_URL =
             "https://www.tradinghours.com/exchanges/nasdaq/trading-hours";
@@ -227,7 +227,7 @@ public final class Util {
                 Double.longBitsToDouble(sharedPreferences
                         .getLong(Util.CASH_VALUE, Double.doubleToLongBits(Util.STARTING_VALUE)));
         // calculate asset value
-        DatabaseHelper db = DatabaseHelper.getInstance(context);        // close ;
+        DatabaseHelper db = DatabaseHelper.getInstance(context); 
         double equityValue = db.getTotalEquity();
         return cashValue + equityValue;
     }
