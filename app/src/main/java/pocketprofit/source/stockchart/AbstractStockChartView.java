@@ -21,13 +21,13 @@ public abstract class AbstractStockChartView extends View {
 
     /*
      * Whenever user selects a chart option: (ChartChangeListener)
-     *      - Change the change text and color.
-     *      - Change the news portal button color
-     *      - Change the chart option button color.
+     *      - Update the change text and color.
+     *      - Update the news portal button color
+     *      - Update the chart option button color.
      *
      * Whenever user makes selection on chart: (UserSelectionListener)
-     *      - Change the price text.
-     *      - Change the change text and color.
+     *      - Update the price text.
+     *      - Update the change text and color.
      */
 
     /* ****************************************************************************************** *
