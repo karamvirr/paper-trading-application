@@ -786,7 +786,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public boolean isTransactionHistoryEmpty() {
         /*
-        SELECT * FROM Transactions.TABLE_NAME
+        SELECT COUNT(*) FROM Transactions.TABLE_NAME
          */
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         boolean empty = true;
