@@ -10,13 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.pocketprofit.R;
 import com.pocketprofit.source.JSONArrayCallback;
 import com.pocketprofit.source.Util;
@@ -84,7 +79,6 @@ public class SectorListActivity extends AppCompatActivity {
      * @param sector    name to display on the user on screen.
      */
     private void insertItem(final String sector) {
-        LinearLayout shimmerLayout = this.findViewById(R.id.shimmer_layout);
         LinearLayout linearLayout = this.findViewById(R.id.sector_list);
 
         View inflatedLayout = getLayoutInflater().inflate(R.layout.sector_name_entry, linearLayout, false);
@@ -101,9 +95,6 @@ public class SectorListActivity extends AppCompatActivity {
             }
         });
 
-        if (shimmerLayout.getChildCount() > 0) {
-            shimmerLayout.removeViewAt(0);
-        }
         linearLayout.addView(inflatedLayout);
     }
 

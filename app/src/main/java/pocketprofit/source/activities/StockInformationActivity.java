@@ -750,7 +750,6 @@ public class StockInformationActivity extends AppCompatActivity implements View.
         tickerView.setCharacterLists(TickerUtils.provideNumberList());
         Typeface typeface = ResourcesCompat.getFont(this, R.font.nunito);
         tickerView.setTypeface(typeface);
-        //tickerView.setAnimationDuration(250);
         tickerView.setAnimationInterpolator(new OvershootInterpolator());
         tickerView.setPreferredScrollingDirection(TickerView.ScrollingDirection.ANY);
     }
