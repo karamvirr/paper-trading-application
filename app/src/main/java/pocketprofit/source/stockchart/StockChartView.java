@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.HapticFeedbackConstants;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -24,14 +24,16 @@ import org.json.JSONObject;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class StockChartView extends AbstractStockChartView {
     // width of the chart lines drawn on the canvas.
     public static final int STROKE_WIDTH = 3;
 
     // used to create the intraday chart, partitions the chart to this many segments.
-    // total minutes in a regular trading session (9:30am-4:00pm)
+    // total minutes in a regular trading session (9:30am-4:00pm EST)
     public static final int MINUTES_IN_TRADING_HOURS = 390;
 
     // used when parsing through chart elemente data sent back from a PocketProfit server.
@@ -65,7 +67,10 @@ public class StockChartView extends AbstractStockChartView {
 
     // stores a references to the context of the chart view's parent activity
     private Context mContext;
- 
+
+    // helps handle the interaction between the user and the stockchartview.
+    private GestureDetector mGestureDetector;
+
     /**
      * Canvas brushes.
      */
@@ -117,6 +122,21 @@ public class StockChartView extends AbstractStockChartView {
         mTextBrush.setTypeface(ResourcesCompat.getFont(context, R.font.nunito));
 
         this.setHapticFeedbackEnabled(true);
+
+        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public void onLongPress(MotionEvent e) {
+                super.onLongPress(e);
+                mState = State.ON;
+            }
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (distanceX <= 75 && distanceY <= 75) {
+                    mState = State.ON;
+                }
+                return super.onScroll(e1, e2, distanceX, distanceY);
+            }
+        });
     }
 
     /**
@@ -172,6 +192,8 @@ public class StockChartView extends AbstractStockChartView {
      * @param range the chart range selected by the user.
      */
     public void setChartRange(final String range) {
+        mCurrentIndex = -1;
+        mState = State.OFF;
         mRange = range;
         switch (mRange) {
             case "1D":
@@ -431,54 +453,28 @@ public class StockChartView extends AbstractStockChartView {
         if (mCurrentIndex == -1 && (mCurrentUtilizedData == null || mCurrentUtilizedData.size() <= 1)) {
             return false;
         }
+        mGestureDetector.onTouchEvent(event);
+        if (mState == State.ON) {
+            List<ChartDataFragment> chartData = mCurrentUtilizedData.getList();
+            mCurrentIndex = getPositionIndex(event);
+            double first;
+            double last;
 
-        List<ChartDataFragment> chartData = mCurrentUtilizedData.getList();
-        switch (mState) {
-            case OFF:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mCurrentIndex = getPositionIndex(event);
-
-                    getParent().requestDisallowInterceptTouchEvent(true);
-
-                    if (mCurrentIndex != -1) {
-                        this.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
-                        mState = State.ON;
-                        double first = (mRange.equals("1D") ? mPreviousClose : getFirst().getPrice());
-                        double last = chartData.get(mCurrentIndex).getPrice();
-
-                        invokeUserSelectionListeners(getIntervalColor(first, last), Util.getPercentChangeText(first, last, false), last);
-                        invalidate();
-                        return true;
-                    }
-                }
-            case ON:
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                getParent().requestDisallowInterceptTouchEvent(false);
+                mState = State.OFF;
+                mCurrentIndex = -1;
+                first = (mRange.equals("1D") ? mPreviousClose : getFirst().getPrice());
+                last = mLatestPrice;
+            } else {
                 getParent().requestDisallowInterceptTouchEvent(true);
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    int onDragSelectionIndex = getPositionIndex(event);
-                    if (onDragSelectionIndex != -1) {
-                        this.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
-                        mCurrentIndex = onDragSelectionIndex;
-                    }
-
-                    double first = (mRange.equals("1D") ? mPreviousClose : getFirst().getPrice());
-                    double last = chartData.get(mCurrentIndex).getPrice();
-
-                    invokeUserSelectionListeners(getIntervalColor(first, last), Util.getPercentChangeText(first, last, false), last);
-                    invalidate();
-                    return true;
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mState = State.OFF;
-                    mCurrentIndex = -1;
-
-                    double first = (mRange.equals("1D") ? mPreviousClose : getFirst().getPrice());
-                    double last = mLatestPrice;
-                    invokeUserSelectionListeners(getIntervalColor(first, last), Util.getPercentChangeText(first, last, false), last);
-                    invalidate();
-                }
+                first = (mRange.equals("1D") ? mPreviousClose : getFirst().getPrice());
+                last = chartData.get(mCurrentIndex).getPrice();
+            }
+            invokeUserSelectionListeners(getIntervalColor(first, last), Util.getPercentChangeText(first, last, false), last);
+            invalidate();
         }
-        getParent().requestDisallowInterceptTouchEvent(false);
-        return false;
+        return true;
     }
 
     /**
@@ -494,7 +490,6 @@ public class StockChartView extends AbstractStockChartView {
      * Clears the vertical line with the label on top which represents a user selection.
      */
     public void clearUserSelection() {
-        //getParent().requestDisallowInterceptTouchEvent(false);
         mCurrentIndex = -1;
         mState = State.OFF;
         invalidate();
@@ -536,7 +531,6 @@ public class StockChartView extends AbstractStockChartView {
                 i++;
             }
 
-            done = false;
             while (i < chartData.size()) {
                 fragment = chartData.get(i);
                 if (fragment.getPrice() != INVALID_ENTRY_FLAG) {
@@ -703,7 +697,6 @@ public class StockChartView extends AbstractStockChartView {
                     }
                 }
 
-                // handling the case if we are drawing the selection line & label fr
                 // handling the case where we are also drawing a selection the user has made.
                 // the selection is drawn by drawing a vertical line at the selected element (if
                 // there is one) and a label on top describing the date of this recorded chart
@@ -722,7 +715,6 @@ public class StockChartView extends AbstractStockChartView {
                         textWidth = width - mTextBrush.measureText(chartElements.get(mCurrentIndex).getLabel());
                     }
 
-                    double z = chartElements.get(mCurrentIndex).getPrice();
                     canvas.drawLine(x, height, x, (float) (height - ((max - min) * incrementY)), mSelectionBrush);
                     canvas.drawText(chartElements.get(mCurrentIndex).getLabel(), textWidth, (height * 0.1f) * 0.5f, mTextBrush);
                 }
