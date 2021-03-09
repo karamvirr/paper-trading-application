@@ -273,16 +273,14 @@ public class MainActivity extends AppCompatActivity {
         setPortfolioValue(currentPortfolioValue);
 
         TextView portfolioChangeText = (TextView) this.findViewById(R.id.todays_change);
-        int color;
-        double startingValue;
-        if (currentPortfolioValue == Util.STARTING_VALUE) {
-            color = this.getResources().getColor(R.color.gray);
-            startingValue = currentPortfolioValue;
-        } else {
-            double delta = mDatabase.getTodaysStockSaleProfit(Util.getTodaysDate());
-            startingValue = currentPortfolioValue - delta;
-            color = (delta >= 0) ? getResources().getColor(R.color.profit) : getResources().getColor(R.color.loss);
-        }
+        int color = this.getResources().getColor(R.color.gray);
+        double delta = mDatabase.getTodaysStockSaleProfit(Util.getTodaysDate());
+        double startingValue = currentPortfolioValue - delta;
+        if (delta > 0) {
+            color = this.getResources().getColor(R.color.profit);
+        } else if (delta < 0) {
+            color = this.getResources().getColor(R.color.loss);
+        }        
         portfolioChangeText.setTextColor(color);
         portfolioChangeText.setText(Util.getPercentChangeText(startingValue, currentPortfolioValue, false));
     }
