@@ -452,7 +452,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         /*
         SELECT *
         FROM Stock.TABLE_NAME
-        WHERE Stock.COLUMN_SYMBOL = 'symbol' AND Stock.COLUMN_DATE = 'name';
+        WHERE Stock.COLUMN_SYMBOL = 'symbol' AND Stock.COLUMN_DATE = 'date';
          */
         String query = "SELECT * " +
                 "FROM " + Stock.TABLE_NAME + " " +
