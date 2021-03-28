@@ -260,11 +260,6 @@ public class StockChartView extends AbstractStockChartView {
                             notifyChartChangeListeners();
                             invalidate();
                         }
-
-                        @Override
-                        public void onFailure(VolleyError error, String errorType) {
-                            // TODO
-                        }
                     });
                     break;
                 case "5D":
@@ -275,11 +270,6 @@ public class StockChartView extends AbstractStockChartView {
                             mCurrentRangeData = mChartDataCache.get(mRange);
                             notifyChartChangeListeners();
                             invalidate();
-                        }
-
-                        @Override
-                        public void onFailure(VolleyError error, String errorType) {
-                            // TODO
                         }
                     });
                     break;
@@ -292,11 +282,6 @@ public class StockChartView extends AbstractStockChartView {
                             notifyChartChangeListeners();
                             invalidate();
                         }
-
-                        @Override
-                        public void onFailure(VolleyError error, String errorType) {
-                            // TODO
-                        }
                     });
                     break;
                 case "6M":
@@ -307,11 +292,6 @@ public class StockChartView extends AbstractStockChartView {
                             mCurrentRangeData = mChartDataCache.get(mRange);
                             notifyChartChangeListeners();
                             invalidate();
-                        }
-
-                        @Override
-                        public void onFailure(VolleyError error, String errorType) {
-                            // TODO
                         }
                     });
                     break;
@@ -324,11 +304,6 @@ public class StockChartView extends AbstractStockChartView {
                             notifyChartChangeListeners();
                             invalidate();
                         }
-
-                        @Override
-                        public void onFailure(VolleyError error, String errorType) {
-                            // TODO
-                        }
                     });
                     break;
                 case "5Y":
@@ -339,11 +314,6 @@ public class StockChartView extends AbstractStockChartView {
                             mCurrentRangeData = mChartDataCache.get(mRange);
                             notifyChartChangeListeners();
                             invalidate();
-                        }
-
-                        @Override
-                        public void onFailure(VolleyError error, String errorType) {
-                            // TODO
                         }
                     });
                     break;
