@@ -5,15 +5,15 @@ package com.pocketprofit.source.stockchart;
  * It will contain the price and the text label for that element.
  */
 public class ChartDataFragment {
-    private double mPrice;
-    private String mLabel;
+    private final float mPrice;
+    private final String mLabel;
 
     public ChartDataFragment(double price, String label) {
-        this.mPrice = price;
+        this.mPrice = (float) price;
         this.mLabel = label;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return mPrice;
     }
 
