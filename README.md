@@ -1,5 +1,7 @@
 # Paper Trading Application for Android 
 
+<a href="https://play.google.com/store/apps/details?id=com.pocketprofit&hl=en_US&gl=US"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
+
 Hello and welcome! 
 
 I built this paper trading application as a way for me to buy/sell stocks with real time prices (leveraging a 3rd party API) all without risking any real money.
